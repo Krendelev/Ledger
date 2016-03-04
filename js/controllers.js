@@ -4,9 +4,8 @@ angular.module('Ledger.controllers', [])
 
 .controller('FeaturesCtrl', function($scope, Features, Database) {
 
-  $scope.features = Database.all();
-//  console.log($scope.db);
-//  $scope.features = Features.all();
+//  $scope.features = Database.all();
+  $scope.features = Features.all();
 //  $scope.hide = function(feature) {
 //    Features.hide(feature);
 //  };
@@ -14,7 +13,7 @@ angular.module('Ledger.controllers', [])
 
 .controller('RecordCtrl', function($scope, $stateParams, $ionicHistory, Features, Records, Database) {
 
-  $scope.feature = Database.get($stateParams.featureId);
+  $scope.feature = Features.get($stateParams.featureId);
   $scope.record = {rec: 0};
   $scope.part = [
     {name: '1/4', quant: 0.25},
@@ -28,7 +27,7 @@ angular.module('Ledger.controllers', [])
 
   $scope.store = function () {
     var minutes = Math.round ($scope.feature.duration * $scope.record.rec.quant);
-    Records.store (Date.parse($scope.date.value), $scope.feature[0].title, $scope.record.rec.name, minutes);
+    Records.store (Date.parse($scope.date.value), $scope.feature.title, $scope.record.rec.name, minutes);
     $ionicHistory.clearCache();
   };
 

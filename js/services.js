@@ -117,48 +117,48 @@ angular.module('Ledger.services', [])
     };
 }])
 
-.factory('Database', function(){
-    var shortName = 'catdb' ;
-    var version = '1.0';
-    var displayName = "Cat's Ledger Database";
-    var maxSize = 5 * 1024 * 1024; // in bytes
-    var db = openDatabase(shortName, version, displayName, maxSize);
-
-    db.transaction(function(tx) {
-        tx.executeSql("CREATE TABLE IF NOT EXISTS features(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, duration INTEGER NOT NULL);");
-    });
-
-    var ftrs = [];
-
-    function dataHandler(tx, results) {
-      ftrs.length = 0;
-      var len = results.rows.length;
-      for(var i = 0; i < len; i++) {
-              ftrs.push(results.rows.item(i));
-      }
-    };
-
-    function errorHandler(tx, error) {
-      console.log('Error: ' + error.message + ' Code: ' + error.code);
-      return;
-    }
-
-    return {
-      all:  function() {
-        db.transaction (function(tx) {
-          tx.executeSql("SELECT * FROM features;", [], dataHandler, errorHandler);
-        });
-        return ftrs;
-      },
-      get: function(featureId) {
-        db.transaction (function(tx) {
-          tx.executeSql("SELECT * FROM features WHERE id=?;", [featureId], dataHandler, errorHandler);
-          console.log(ftrs);
-          console.log(featureId);
-        });
-        return ftrs;
-      }
-    };
-})
+//.factory('Database', function(){
+//    var shortName = 'catdb' ;
+//    var version = '1.0';
+//    var displayName = "Cat's Ledger Database";
+//    var maxSize = 5 * 1024 * 1024; // in bytes
+//    var db = openDatabase(shortName, version, displayName, maxSize);
+//
+//    db.transaction(function(tx) {
+//        tx.executeSql("CREATE TABLE IF NOT EXISTS features(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, duration INTEGER NOT NULL);");
+//    });
+//
+//    var ftrs = [];
+//
+//    function dataHandler(tx, results) {
+//      ftrs.length = 0;
+//      var len = results.rows.length;
+//      for(var i = 0; i < len; i++) {
+//              ftrs.push(results.rows.item(i));
+//      }
+//    }
+//
+//    function errorHandler(tx, error) {
+//      console.log('Error: ' + error.message + ' Code: ' + error.code);
+//      return;
+//    }
+//
+//    return {
+//      all:  function() {
+//        db.transaction (function(tx) {
+//          tx.executeSql("SELECT * FROM features;", [], dataHandler, errorHandler);
+//        });
+//        return ftrs;
+//      },
+//      get: function(featureId) {
+//        db.transaction (function(tx) {
+//          tx.executeSql("SELECT * FROM features WHERE id=?;", [featureId], dataHandler, errorHandler);
+//          console.log(ftrs);
+//          console.log(featureId);
+//        });
+//        return ftrs;
+//      }
+//    };
+//})
 
 ;
