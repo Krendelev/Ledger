@@ -1,0 +1,32 @@
+<ion-view view-title="Summary">
+  <ion-content>
+    <div class="list">
+      <p class="item">Количество передач: <span class="right">{{count}}</span></p>
+      <p class="item">Количество часов: <span class="right">{{total}}</span></p>
+      <div class="item item-divider"></div>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Месяц
+        </div>
+        <select ng-model="period.value">
+          <option ng-value="0">Январь</option>
+          <option ng-value="1">Февраль</option>
+          <option ng-value="2">Март</option>
+          <option ng-value="3">Апрель</option>
+          <option ng-value="4">Май</option>
+          <option ng-value="5">Июнь</option>
+          <option ng-value="6">Июль</option>
+          <option ng-value="7">Август</option>
+          <option ng-value="8">Сентябрь</option>
+          <option ng-value="9">Октябрь</option>
+          <option ng-value="10">Ноябрь</option>
+          <option ng-value="11">Декабрь</option>
+        </select>
+      </label>
+      <div class="item item-divider"></div>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-positive" ng-click="getTotal()" ng-disabled="!period.value">Total</button>
+    </div>
+  </ion-content>
+</ion-view>

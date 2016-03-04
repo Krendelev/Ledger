@@ -1,0 +1,33 @@
+<!--<ion-nav-view name="recordView"></ion-nav-view>-->
+
+ <ion-view view-title="{{feature.title}}">
+  <ion-content>
+     <div class="list list-inset">
+       <label class="item item-input">
+         <input class="centered" type="date" placeholder="&emsp; yyyy-MM-dd" ng-model="date.value">
+       </label>
+     </div>
+     <div class="row">
+      <div class="col">
+       <div class="list">
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[0]">1/4</ion-radio>
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[2]">1/2</ion-radio>
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[4]">3/4</ion-radio>
+       </div>
+      </div>
+      <div class="col">
+       <div class="list">
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[1]">1/3</ion-radio>
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[3]">2/3</ion-radio>
+          <ion-radio class="item" ng-model="record.rec" ng-value="part[5]">1/1</ion-radio>
+       </div>
+      </div>
+     </div>
+     <div class="row">&emsp;</div>
+     <div class="padding">
+       <a href="#/tab/log" class="button button-block button-positive" ng-click="store()" ng-disabled="!record.rec">
+          Record
+       </a>
+     </div>
+  </ion-content>
+</ion-view>
