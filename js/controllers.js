@@ -2,16 +2,15 @@
 
 angular.module('Ledger.controllers', [])
 
-.controller('FeaturesCtrl', function($scope, Features, Database) {
+.controller('FeaturesCtrl', function($scope, $stateParams, Features) {
 
-//  $scope.features = Database.all();
   $scope.features = Features.all();
-//  $scope.hide = function(feature) {
-//    Features.hide(feature);
-//  };
+  $scope.delete = function(featId) {
+    Features.remove(featId);
+  };
 })
 
-.controller('RecordCtrl', function($scope, $stateParams, $ionicHistory, Features, Records, Database) {
+.controller('RecordCtrl', function($scope, $stateParams, $ionicHistory, Features, Records) {
 
   $scope.feature = Features.get($stateParams.featureId);
   $scope.record = {rec: 0};

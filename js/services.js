@@ -1,82 +1,28 @@
 angular.module('Ledger.services', [])
 
-.factory('Features', function() {
+.factory('Features', function(Database) {
 
-  var features = [
-    {
-      "id": 1,
-      "title": "Персонально ваш",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 2,
-      "title": "Дилетанты",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 3,
-      "title": "Курс Потапенко",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 4,
-      "title": "Суть событий",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 5,
-      "title": "Чувствительно",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 6,
-      "title": "Все так",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 7,
-      "title": "Цена победы",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 8,
-      "title": "Открытая библиотека",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 9,
-      "title": "Телехранитель",
-      "duration": 60,
-      "visibility": 1
-    },
-    {
-      "id": 10,
-      "title": "Точка",
-      "duration": 60,
-      "visibility": 1
-    }];
+  var features = Database("SELECT * FROM features;");
 
   return {
     all: function() {
       return features;
     },
-//    hide: function(feature) {
-//      features.splice(features.indexOf(feature), 1);
-//    },
-    get: function(featureId) {
+    get: function(featId) {
       for (var i = 0; i < features.length; i++) {
-        if (features[i].id === parseInt(featureId)) {
+        if (features[i].id === featId) {
           return features[i];
         }
       }
+      return null;
+    },
+    remove: function(featId) {
+      for (var i = 0; i < features.length; i++) {
+        if (features[i].id === featId) {
+            features.splice (i, 1);
+        }
+      };
+      Database("DELETE FROM features WHERE id=?;", [featId]);
       return null;
     }
   };
@@ -117,48 +63,103 @@ angular.module('Ledger.services', [])
     };
 }])
 
-//.factory('Database', function(){
-//    var shortName = 'catdb' ;
-//    var version = '1.0';
-//    var displayName = "Cat's Ledger Database";
-//    var maxSize = 5 * 1024 * 1024; // in bytes
-//    var db = openDatabase(shortName, version, displayName, maxSize);
-//
-//    db.transaction(function(tx) {
-//        tx.executeSql("CREATE TABLE IF NOT EXISTS features(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, duration INTEGER NOT NULL);");
-//    });
-//
-//    var ftrs = [];
-//
-//    function dataHandler(tx, results) {
-//      ftrs.length = 0;
-//      var len = results.rows.length;
-//      for(var i = 0; i < len; i++) {
-//              ftrs.push(results.rows.item(i));
-//      }
-//    }
-//
-//    function errorHandler(tx, error) {
-//      console.log('Error: ' + error.message + ' Code: ' + error.code);
-//      return;
-//    }
-//
-//    return {
-//      all:  function() {
-//        db.transaction (function(tx) {
-//          tx.executeSql("SELECT * FROM features;", [], dataHandler, errorHandler);
-//        });
-//        return ftrs;
-//      },
-//      get: function(featureId) {
-//        db.transaction (function(tx) {
-//          tx.executeSql("SELECT * FROM features WHERE id=?;", [featureId], dataHandler, errorHandler);
-//          console.log(ftrs);
-//          console.log(featureId);
-//        });
-//        return ftrs;
-//      }
-//    };
-//})
+.factory('Database', function(){
+    var shortName = 'catdb' ;
+    var version = '1.0';
+    var displayName = "Cat's Ledger Database";
+    var maxSize = 5 * 1024 * 1024; // in bytes
+    var db = openDatabase(shortName, version, displayName, maxSize);
 
+    db.transaction(function(tx) {
+        tx.executeSql("CREATE TABLE IF NOT EXISTS features(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, duration INTEGER NOT NULL);");
+    });
+
+    var series = [];
+    var params = [];
+
+    function dataHandler(tx, results) {
+      series.length = 0;
+      var len = results.rows.length;
+      for(var i = 0; i < len; i++) {
+          series.push(results.rows.item(i));
+      }
+    }
+
+    function errorHandler(tx, error) {
+      console.log('Error: ' + error.message + ' Code: ' + error.code);
+      return;
+    }
+
+    return function(query, params) {
+      db.transaction (function(tx) {
+          tx.executeSql(query, params, dataHandler, errorHandler);
+      });
+      return series;
+    }
+
+
+})
 ;
+
+
+//  var features = [
+//    {
+//      "id": 1,
+//      "title": "Персонально ваш",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 2,
+//      "title": "Дилетанты",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 3,
+//      "title": "Курс Потапенко",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 4,
+//      "title": "Суть событий",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 5,
+//      "title": "Чувствительно",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 6,
+//      "title": "Все так",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 7,
+//      "title": "Цена победы",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 8,
+//      "title": "Открытая библиотека",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 9,
+//      "title": "Телехранитель",
+//      "duration": 60,
+//      "visibility": 1
+//    },
+//    {
+//      "id": 10,
+//      "title": "Точка",
+//      "duration": 60,
+//      "visibility": 1
+//    }];
