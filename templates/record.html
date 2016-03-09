@@ -1,6 +1,4 @@
-<!--<ion-nav-view name="recordView"></ion-nav-view>-->
-
- <ion-view view-title="{{feature.title}}">
+  <ion-view view-title="{{feature.title}}">
   <ion-content>
      <div class="list list-inset">
        <label class="item item-input">
@@ -23,7 +21,17 @@
        </div>
       </div>
      </div>
-     <div class="row">&emsp;</div>
+     <ul class="list list-inset">
+      <li class="item item-toggle">
+         Мама
+         <label class="toggle toggle-positive">
+           <input type="checkbox" ng-model="mila.did" ng-true-value="0" ng-false-value="1">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+       </li>
+     </ul>
      <div class="padding">
        <a href="#/tab/log" class="button button-block button-positive" ng-click="store()" ng-disabled="!record.rec">
           Record

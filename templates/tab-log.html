@@ -3,7 +3,7 @@
     <ion-list>
      <ion-item class="item-remove-animate item-icon-right" ng-repeat="record in records | orderBy: '-time' track by record.time" type="item-text-wrap">
         <h2>{{record.time | date:'MMM dd'}}&emsp;{{record.part}}&emsp;{{record.title}}</h2>
-        <ion-option-button class="button-assertive" ng-click="remove(record.time)">
+        <ion-option-button class="button-assertive" ng-click="remove(record)">
           Delete
         </ion-option-button>
       </ion-item>

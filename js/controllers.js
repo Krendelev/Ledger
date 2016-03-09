@@ -1,16 +1,51 @@
-'use strict';
+"use strict";
 
 angular.module('Ledger.controllers', [])
 
-.controller('FeaturesCtrl', function($scope, $stateParams, Features) {
+.controller('FeaturesCtrl', function($scope, $ionicModal, Features) {
 
   $scope.features = Features.all();
-  $scope.delete = function(featId) {
-    Features.remove(featId);
+  $scope.feature = {
+                    id: 0,
+                    title: "",
+                    duration: undefined
   };
+  if (Object.keys($scope.features).length > 0) {
+      $scope.feature.id = $scope.features[$scope.features.length-1].id;
+  }
+
+  $scope.add = function() {
+    Features.add(++$scope.feature.id, $scope.feature.title, $scope.feature.duration);
+    $scope.feature.title = "";
+    $scope.feature.duration = undefined;
+
+    $scope.modal.hide();
+  };
+  $scope.remove = function(feature) {
+    Features.remove(feature);
+  };
+
+  $ionicModal.fromTemplateUrl('templates/addFeature.html', {scope: $scope})
+    .then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.showAdd = function() {
+    $scope.modal.show();
+  };
+
+  $scope.closeAdd = function() {
+    $scope.feature.title = "";
+    $scope.feature.duration = 0;
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 })
 
-.controller('RecordCtrl', function($scope, $stateParams, $ionicHistory, Features, Records) {
+.controller('RecordCtrl', ['$scope', '$stateParams', '$ionicHistory', 'Features', 'Records', function($scope, $stateParams, $ionicHistory, Features, Records) {
 
   $scope.feature = Features.get($stateParams.featureId);
   $scope.record = {rec: 0};
@@ -20,17 +55,19 @@ angular.module('Ledger.controllers', [])
     {name: '1/2', quant: 0.50},
     {name: '2/3', quant: 0.66},
     {name: '3/4', quant: 0.75},
-    {name: '1/1', quant: 1}
+    {name: '1/1', quant: 1.00}
   ];
   $scope.date = {value: new Date()};
+  $scope.mila = {did: 1};
 
   $scope.store = function () {
-    var minutes = Math.round ($scope.feature.duration * $scope.record.rec.quant);
+    var minutes = Math.round ($scope.feature.duration * $scope.record.rec.quant * $scope.mila.did);
     Records.store (Date.parse($scope.date.value), $scope.feature.title, $scope.record.rec.name, minutes);
     $ionicHistory.clearCache();
+
   };
 
-})
+}])
 
 .controller('LogCtrl', function($scope, $ionicHistory, Features, Records) {
 
@@ -38,8 +75,8 @@ angular.module('Ledger.controllers', [])
     $ionicHistory.clearHistory();
   });
   $scope.records = Records.all();
-  $scope.remove = function(tag) {
-    Records.remove(tag);
+  $scope.remove = function(record) {
+    Records.remove(record);
   };
 
 })
@@ -60,10 +97,10 @@ angular.module('Ledger.controllers', [])
         sum += $scope.records[i].minutes;
         counter++;
       }
-    };
+    }
     $scope.total = (sum / 60).toFixed(2);
     $scope.count = counter;
-  }
+  };
 
 })
 

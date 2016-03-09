@@ -1,8 +1,14 @@
 <ion-view view-title="Summary">
   <ion-content>
     <div class="list">
-      <p class="item">Количество передач: <span class="right">{{count}}</span></p>
-      <p class="item">Количество часов: <span class="right">{{total}}</span></p>
+      <p class="item item-icon-left">
+          <i class="icon ion-ios-recording"></i>
+          Всего передач: <span class="right">{{count}}</span>
+      </p>
+      <p class="item item-icon-left">
+          <i class="icon ion-ios-time"></i>
+          Всего часов: <span class="right">{{total}}</span>
+      </p>
       <div class="item item-divider"></div>
       <label class="item item-input item-select">
         <div class="input-label">

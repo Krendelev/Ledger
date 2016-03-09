@@ -1,10 +1,15 @@
 <ion-view view-title="Features">
-  <ion-content>
+    <ion-nav-buttons side="secondary">
+          <div class="buttons">
+              <button class="button button-clear" ng-click="showAdd()">Add</button>
+          </div>
+      </ion-nav-buttons>
+    <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="feature in features track by feature.id" type="item-text-wrap" href="#/tab/features/{{feature.id}}">
         <h2>{{feature.title}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
-        <ion-option-button class="button-assertive" ng-click="delete(feature.id)">
+        <ion-option-button class="button-assertive" ng-click="remove(feature)">
           Delete
         </ion-option-button>
       </ion-item>
